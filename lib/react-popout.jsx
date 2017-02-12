@@ -61,12 +61,12 @@ export default class PopoutWindow extends React.Component {
     });
   }
 
-  findScritps (node)  {
+  findScripts (node)  {
     if (node.tagName && node.tagName === 'script') {
       return (node.childNodes || []).map((n) => n.value);
     }
 
-    return flatten((node.childNodes || []).map(findScritps));
+    return flatten((node.childNodes || []).map(findScripts));
   }
 
   /**
@@ -170,5 +170,6 @@ export default class PopoutWindow extends React.Component {
   }
 
 }
+
 
 
