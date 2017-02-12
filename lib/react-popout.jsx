@@ -66,7 +66,7 @@ export default class PopoutWindow extends React.Component {
       return (node.childNodes || []).map((n) => n.value);
     }
 
-    return flatten((node.childNodes || []).map(findScripts));
+    return flatten((node.childNodes || []).map(this.findScripts));
   }
 
   /**
@@ -170,6 +170,7 @@ export default class PopoutWindow extends React.Component {
   }
 
 }
+
 
 
 
