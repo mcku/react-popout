@@ -48,7 +48,6 @@ export default class PopoutWindow extends React.Component {
     super(props);
     this[_CONTAINER_ID] = props.containerId || 'popout-content-container';
     this.closeWindow = this.closeWindow.bind(this);
-    this.setState({scripts: this.parse(props)})
   }
 
 
@@ -171,4 +170,5 @@ export default class PopoutWindow extends React.Component {
   }
 
 }
+
 
