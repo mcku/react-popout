@@ -1,6 +1,8 @@
 import React        from 'react';
 import ReactDOM     from 'react-dom';
 const _CONTAINER_ID = Symbol('container_id');
+const flatten = require('lodash/flatten');
+
 
 /**
  * @class PopoutWindow
@@ -46,6 +48,26 @@ export default class PopoutWindow extends React.Component {
     super(props);
     this[_CONTAINER_ID] = props.containerId || 'popout-content-container';
     this.closeWindow = this.closeWindow.bind(this);
+    this.setState({scripts: this.parse(props)})
+  }
+
+
+  run () {
+    const scripts = ((this.state || {}).scripts || []);
+
+    var fns = scripts.map((src) => {
+      return new Function('require', src);
+    }).forEach((fn) => {
+      return fn();
+    });
+  }
+
+  findScritps (node)  {
+    if (node.tagName && node.tagName === 'script') {
+      return (node.childNodes || []).map((n) => n.value);
+    }
+
+    return flatten((node.childNodes || []).map(findScritps));
   }
 
   /**
@@ -74,6 +96,8 @@ export default class PopoutWindow extends React.Component {
               popoutWindow && popoutWindow.close();
             }
           };
+    this.setState({scripts: this.findScripts(this.props.children)},
+      () => this.run());
 
     if (!ownerWindow) {
       // If we have no owner windows, bail. Likely server side render
@@ -147,3 +171,4 @@ export default class PopoutWindow extends React.Component {
   }
 
 }
+
